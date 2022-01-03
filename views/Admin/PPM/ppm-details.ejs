@@ -1,0 +1,96 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<style>
+    .text-center{text-align: center;}
+</style>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">View PPM</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/ppm">PPM</a></li>
+                    <li class="breadcrumb-item active">View PPM</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <h4>View PPM</h4>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="/properties-wise-view-ppm" class="btn btn-warning waves-effect waves-light" style="float: right;">Back</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-5">
+                        <h4>PPM Detail</h4>
+                        <br>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td>Property Name :-</td>
+                                        <td>Oberio</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Task Name :-</td>
+                                        <td>Task Name 1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Due Date :-</td>
+                                        <td>10/05/2020</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Complition Date :-</td>
+                                        <td>11/05/2020</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vendor Name :-</td>
+                                        <td>Vendor Name 1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Complition By :-</td>
+                                        <td>Complition By Name</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                        <h4>Remarks</h4>
+                        <br>
+                        <div style="padding: 30px; border: 1px solid #73a1c28f; border-radius: 30px;">
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione deleniti ipsa iusto? Iusto, rem aliquam vitae eligendi, maxime consequatur laboriosam molestias saepe ex asperiores id? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione deleniti ipsa iusto? Iusto, rem aliquam vitae eligendi, maxime consequatur laboriosam molestias saepe ex asperiores id?</p>
+                        </div>
+                        <br>
+                        <h4>Remarks</h4>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-2"><img src="public/assets/images/small/img-1.jpg" width="100%"></div>
+                            <div class="col-md-2"><img src="public/assets/images/small/img-1.jpg" width="100%"></div>
+                            <div class="col-md-2"><img src="public/assets/images/small/img-1.jpg" width="100%"></div>
+                            <div class="col-md-2"><img src="public/assets/images/small/img-1.jpg" width="100%"></div>
+                            <div class="col-md-2"><img src="public/assets/images/small/img-1.jpg" width="100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<%- contentFor('BottomJs') %>

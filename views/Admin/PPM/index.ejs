@@ -1,0 +1,236 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<style>
+    .text-center{text-align: center;}
+</style>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">PPM</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item active">PPM</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" action="/ppm" id="form">
+                <div class="row mb-2">
+                    <!-- start searching -->
+                    <div class="col-sm-3">
+                        <div class="search-box">
+                            <div class="position-relative">
+                                <input type="text" name="search" value="<%= search %>" class="form-control" placeholder="Search..."><i class="bx bx-search-alt search-icon"></i>
+                                <input type="hidden" name="page" id="page" value="<%= page %>">
+                                <i class="bx bx-search-alt search-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding: 0px;">
+                        <button type="button" onclick="pagination(1)" class="btn btn-warning btn-rounded waves-effect waves-light"><i class="bx bx-search-alt search-icon"></i> Search</button>
+                    </div>
+                    <!-- end searching -->
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">
+                            <a href="/view-ppm" class="btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2"> <b>VIEW PPM</b></a>
+                            <a href="/assign-ppm" class="btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2"> <b>ASSIGN PPM</b></a>
+                            <button type="button" class="btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2" data-bs-toggle="modal" data-bs-target=".orderdetailsModal">
+                                <i class="mdi mdi-plus me-1"></i><b>ADD</b> </button>
+                            <button type="button" class="btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2" data-bs-toggle="modal" data-bs-target=".addtopic" hidden id="addTopic"> Add Topic </button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap table-check">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Sr.No</th>
+                                <th>PPM Name</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(data.length ==0) { %>
+                                <tr><td colspan="4" class="text-center">No data found</td></tr>
+                            <% } %>
+                            <% for (i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <td style="width: 7%;" class="text-center"><%= (10*(page-1))+ 1 + i %></td>
+                                <td><%= data[i].ppmName %></td>
+                                <td style="text-align: center;width: 10%;">
+                                    <input type="checkbox" id="switch<%= i %>" onchange="ppmChange('<%= data[i]._id %>')" switch="warning" <% if(data[i].status == 1){ %> checked <% } %>>
+                                    <label for="switch<%= i %>" data-on-label="Yes" data-off-label="No"></label>
+                                </td>
+                                <td style="text-align: center;width: 10%;">
+                                    <a href="/edit-ppm/<%= data[i]._id %>" class="btn btn-outline-warning"><b>Edit</b></a>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- start pagination -->
+                <ul class="pagination pagination-rounded justify-content-end mb-2">
+                    <% if(page > 1){ %>
+                        <li class="page-item">
+                            <a class="page-link" href="#" onclick="pagination(<%=(Number(page)-1)%>)" aria-label="Previous">
+                                <i class="mdi mdi-chevron-left"></i>
+                            </a>
+                        </li>
+                    <% } %>
+                    <% for (i = 1; i <= totalPage; i++) { %>
+                        <li class="page-item  <% if(page == i){ %> active <% } %>"><a class="page-link"  href="#" onclick="pagination(<%=i%>)"><%=i%></a></li>
+                    <% } %>
+                    <% if(page < totalPage){ %>
+                    <li class="page-item">
+                        <a class="page-link"  href="#" onclick="pagination(<%=(Number(page)+1)%>)" aria-label="Next">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <!-- end pagination -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<!-- add ppm name Modal -->
+<form action="/create-ppm" method="POST" enctype="multipart/form-data" class="custom-validation">
+    <div class="modal fade orderdetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderdetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderdetailsModalLabel">Add PPM</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 row">
+                        <label for="example-text-input" class="col-md-3 col-form-label">PPM Name</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" name="ppmName" id="ppmName" placeholder="PPM Name" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="submitPPMName" class="btn btn-warning waves-effect waves-light">Next</button>
+                    <button type="button" id="ppmClose" hidden data-bs-dismiss="modal">close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+
+    <!-- add topic Modal -->
+    <div class="modal fade addtopic" tabindex="-1" role="dialog" aria-labelledby="orderdetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderdetailsModalLabel">Add Topic</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="example-text-input" class="col-md-4 col-form-label">PPM Name :- </label>
+                            <label for="example-text-input" class="col-md-3 col-form-label" id="ppmNameLabel">PPM Name</label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3 row">
+                                <label for="example-text-input" class="col-md-4 col-form-label">Task Name :-</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" name="taskName" type="text" value="" id="taskName" placeholder="DG (200 KVA) - No Load Test (Month)" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="example-text-input" class="col-md-4 col-form-label">Vendor Name :-</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" name="vendorName" type="text" value="" id="vendorName" placeholder="AMC Required" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-md-4 col-form-label">Frequency :-</label>
+                                <div class="col-md-8">
+                                    <select class="form-select" name="frequency" required>
+                                        <option value="weekly" selected>Weekly</option>
+                                        <option value="monthly" >Monthly</option>
+                                        <option value="quarterly" >Quarterly</option>
+                                        <option value="annually" >Annually</option>
+                                        <option value="bi-annually">Bi-Annually</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-md-2 col-form-label">Month:-</label>
+                                <div class="col-md-4">
+                                    <select class="form-select" name="month">
+                                        <% for(m = 0; m < months.length; m++) { %>
+                                        <option value="<%= m+1 %>" <% if (m == 0) { %> selected <% } %> ><%= months[m] %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <label class="col-md-2 col-form-label">Date :-</label>
+                                <div class="col-md-4">
+                                    <select class="form-select" name="date">
+                                        <% for (i = 0; i < 31; i++) { %>
+                                        <option value="<%=i+1%>"><%=i+1%></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary waves-effect waves-light" >Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<%- contentFor('FooterJs') %>
+<script>
+    function ppmChange(id){
+      $.post("update-ppm-status",
+      {
+        ppmId: id
+      },
+      function(data, status){
+       
+      });
+    }
+    function pagination(i){
+        $("#page").val(i);
+        $("#form").submit();
+    }
+
+    $("#submitPPMName").click(function(){
+        let ppmName = $("#ppmName").val();
+        if(ppmName.trim() != ""){
+            $("#ppmNameLabel").html(ppmName);
+            $("#ppmClose").click();
+            $("#addTopic").click();
+        }else{
+            toastr.error("PPM Name is required");
+        }
+    })
+</script>
+<!-- end modal -->
+<%- contentFor('BottomJs') %>

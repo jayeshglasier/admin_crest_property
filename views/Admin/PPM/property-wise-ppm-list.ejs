@@ -1,0 +1,121 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<style>
+    .text-center{text-align: center;}
+</style>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Properties Wise PPM View</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/ppm">PPM</a></li>
+                    <li class="breadcrumb-item active"><a href="/view-ppm">View PPM</a></li>
+                    <li class="breadcrumb-item active">Mondel Height</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" action="/properties-wise-view-ppm/<%=data.propertyId%>" id="form">
+                <div class="row mb-2">
+                    <!-- start searching -->
+                    <div class="col-sm-3">
+                        <div class="search-box">
+                            <div class="position-relative">
+                                <input type="text" name="search" value="<%= search %>" class="form-control" placeholder="Search..."><i class="bx bx-search-alt search-icon"></i>
+                                <input type="hidden" name="page" id="page" value="<%= page %>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding: 0px;">
+                        <button type="button" onclick="pagination(1)" class="btn btn-warning btn-rounded waves-effect waves-light"><i class="bx bx-search-alt search-icon"></i> Search</button>
+                    </div>
+                    <!-- end searching -->
+                    <div class="col-sm-6">
+                        <a href="/view-ppm" class="btn btn-warning waves-effect waves-light" style="float: right;">Back</a>
+                    </div>
+                </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap table-check">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Sr.No</th>
+                                <th>Task Name</th>
+                                <th>Frequency</th>
+                                <th>Vendor Name</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(taskData.length ==0) { %>
+                                <tr><td colspan="5" class="text-center">No data found</td></tr>
+                            <% } %>
+                            <% for(let i = 0;i<taskData.length;i++){ %>
+                            <tr>
+                                <td class="text-center" style="width:7%"><%= (10*(page-1))+ 1 + i %></a></td>
+                                <td><%= taskData[i].taskName %></td>
+                                <td><% if(taskData[i].frequency == "monthly"){ %>
+                                        Monthly
+                                    <% }else if(taskData[i].frequency == "quarterly"){ %>
+                                        Quarterly
+                                    <% }else if(taskData[i].frequency == "annually"){ %>
+                                        Annually
+                                    <% }else if(taskData[i].frequency == "bi-annually"){ %>
+                                        Annually
+                                    <% }else if(taskData[i].frequency == "weekly"){ %>
+                                        Weekly
+                                    <% } %></td>
+                                <td><%= taskData[i].vendorName %></td>
+                                <td class="text-center" style="width:7%">
+                                    <a href="/ppm-details/<%= taskData[i].taskId %>/<%= data.propertyId %>/" class="btn btn-warning waves-effect waves-light">View</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- start pagination -->
+                <ul class="pagination pagination-rounded justify-content-end mb-2">
+                    <% if(page > 1){ %>
+                        <li class="page-item">
+                            <a class="page-link" href="#" onclick="pagination(<%=(Number(page)-1)%>)" aria-label="Previous">
+                                <i class="mdi mdi-chevron-left"></i>
+                            </a>
+                        </li>
+                    <% } %>
+                    <% for (i = 1; i <= totalPage; i++) { %>
+                        <li class="page-item  <% if(page == i){ %> active <% } %>"><a class="page-link"  href="#" onclick="pagination(<%=i%>)"><%=i%></a></li>
+                    <% } %>
+                    <% if(page < totalPage){ %>
+                    <li class="page-item">
+                        <a class="page-link"  href="#" onclick="pagination(<%=(Number(page)+1)%>)" aria-label="Next">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <!-- end pagination -->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function pagination(i){
+        $("#page").val(i);
+        $("#form").submit();
+    }
+</script>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<%- contentFor('BottomJs') %>

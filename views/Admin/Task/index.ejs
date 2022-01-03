@@ -1,0 +1,111 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<style>
+    .text-center{text-align: center;}
+</style>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Assign List</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Assign List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" action="/task" id="form">
+                <div class="row mb-2">
+                   <!-- start searching -->
+                   <div class="col-sm-3">
+                        <div class="search-box">
+                            <div class="position-relative">
+                                <input type="text" name="search" value="<%= search %>" class="form-control" placeholder="Search..."><i class="bx bx-search-alt search-icon"></i>
+                                <input type="hidden" name="page" id="page" value="<%= page %>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding: 0px;">
+                        <button type="button" onclick="pagination(1)" class="btn btn-warning btn-rounded waves-effect waves-light"><i class="bx bx-search-alt search-icon"></i> Search</button>
+                    </div>
+                    <!-- end searching -->
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">
+                            <a href="/create-task" class="btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2"><b>ASSIGN TASK</b></a>
+                        </div>
+                    </div>
+                </div>
+                </form>
+                <hr>
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap table-check">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Sr.No</th>
+                                <th>Property Name</th>
+                                <th>Category Name</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(data.length ==0) { %>
+                                <tr><td colspan="3" class="text-center">No data found</td></tr>
+                            <% } %>
+                            <% for (i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <td class="text-center" style="width:7%"><%= (10*(page-1))+ 1 + i %></td>
+                                <td><%= data[i].property_name %></td>
+                                <td><%= data[i].category_name %></td>
+                                <td class="text-center" style="width:7%">
+                                    <!--<a href="edit-task/<%= data[i]._id %>" class="btn btn-outline-warning"><b>Edit</b></a>-->
+                                    <a href="view-task/<%= data[i]._id %>" class="btn btn-outline-secondary"><b>View</b></a>
+                                </td>
+                            </tr>     
+                            <%  } %>                     
+                        </tbody>
+                    </table>
+                </div>
+                 <!-- start pagination -->
+                 <ul class="pagination pagination-rounded justify-content-end mb-2">
+                    <% if(page > 1){ %>
+                        <li class="page-item">
+                            <a class="page-link" href="#" onclick="pagination(<%=(Number(page)-1)%>)" aria-label="Previous">
+                                <i class="mdi mdi-chevron-left"></i>
+                            </a>
+                        </li>
+                    <% } %>
+                    <% for (i = 1; i <= totalPage; i++) { %>
+                        <li class="page-item  <% if(page == i){ %> active <% } %>"><a class="page-link"  href="#" onclick="pagination(<%=i%>)"><%=i%></a></li>
+                    <% } %>
+                    <% if(page < totalPage){ %>
+                    <li class="page-item">
+                        <a class="page-link"  href="#" onclick="pagination(<%=(Number(page)+1)%>)" aria-label="Next">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <!-- end pagination -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<script>
+    function pagination(i){
+        $("#page").val(i);
+        $("#form").submit();
+    }
+</script>
+<%- contentFor('FooterJs') %>
+<%- contentFor('BottomJs') %>

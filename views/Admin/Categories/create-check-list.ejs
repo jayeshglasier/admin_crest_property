@@ -1,0 +1,157 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Add Check List</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/categories">Master Category</a></li>
+                    <li class="breadcrumb-item"><a href="/edit-category-checklist/<%= category_id %>">Category Name</a></li>
+                    <li class="breadcrumb-item active">Add Check List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Add Check List</h4>
+                <form action="/store-category-checklist" method="POST" class="custom-validation">
+					<input type="hidden" name="category_id" value="<%= category_id %>">
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="mb-3">
+                                <label class="form-label">Checklist Id<span class="required">*</span></label>
+                                <input type="text" name="checklist_id" value="<%= uniqueId %>" disabled class="form-control" placeholder="Enter Checklist Id" style="text-transform:uppercase">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="mb-3">
+                                <label class="form-label">Checklist Name<span class="required">*</span></label>
+                                <input type="text" name="checklist_name" class="form-control" placeholder="Enter Checklist Name" value="<%=(typeof inputData!='undefined')? inputData.checklist_name:''%>" autofocus maxlength="200" required>
+                                <p style="color: red;"><%=(typeof errors!='undefined' && typeof errors.checklist_name!='undefined' )? errors.checklist_name.msg:''%></p>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="mb-3">
+                                <label class="form-label">Type<span class="required">*</span></label>
+                                <select class="form-select" name="type" required>
+                                    <option value="form">Form</option>
+                                    <option value="register">Register</option>
+                                    <option value="check_list">Checklist</option>
+                                </select>
+                                <p style="color: red;"><%=(typeof errors!='undefined' && typeof errors.type!='undefined' )? errors.type.msg:''%></p>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="mb-3">
+                                <label class="form-label">Frequency<span class="required">*</span></label>
+                                <select class="form-select" id="frequency" name="frequency" calue="weekly" onchange="changeFrequency()" required>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="annually">Annually</option>
+                                    <option value="bi_annually">Bi-Annually</option>
+                                </select>
+                                <p style="color: red;"><%=(typeof errors!='undefined' && typeof errors.frequency!='undefined' )? errors.frequency.msg:''%></p>
+                            </div>
+                        </div>
+						<div class="col-xl-2 checklist_day">
+                            <div class="mb-3">
+                                <label class="form-label">Day<span class="required">*</span></label>
+                                <select class="form-select checklist_day" name="day" required>
+                                    <option value="monday" selected>Monday</option>
+									<option value="tuesday">Tuesday</option>
+									<option value="wednesday">Wednesday</option>
+									<option value="thursday">Thursday</option>
+									<option value="friday">Friday</option>
+									<option value="saturday">Saturday</option>
+									<option value="sunday">Sunday</option>
+                                </select>
+                                <p style="color: red;"><%=(typeof errors!='undefined' && typeof errors.month!='undefined' )? errors.month.msg:''%></p>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 checklist_month">
+                            <div class="mb-3">
+                                <label class="form-label checklist_month">Month<span class="required">*</span></label>
+                                <select class="form-select" name="month">
+                                    <% for(m = 0; m < months.length; m++) { %>
+                                    	<option value="<%= m+1 %>" <% if(m == 0) { %> selected <% } %>><%=months[m]%></option>
+                                    <% } %>
+                                </select>
+                                <p style="color: red;"><%=(typeof errors!='undefined' && typeof errors.month!='undefined' )? errors.month.msg:''%></p>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 checklist_date">
+                            <div class="mb-3">
+                                <label class="form-label checklist_date">Date<span class="required">*</span></label>
+                                <select class="form-select" name="date" required>
+                                    <% for (i = 1; i < 32; i++) { %>
+                                    <option value="<%=i%>" <% if(i == 1) { %> selected <% } %>><%=i%></option>
+                                    <% } %>
+                                </select>
+                                <p style="color: red;"><%=(typeof errors!='undefined' && typeof errors.date!='undefined' )? errors.date.msg:''%></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="col-xl-2"></div>
+                        <div class="col-xl-6">
+                                <button type="submit" class="btn btn-warning btn-rounded waves-effect waves-light"><b><i class="bx bx-check-double label-icon"></i> Save & Create Form</b></button>
+                                <a href="/edit-category-checklist/<%= category_id %>" class="btn btn-danger btn-rounded waves-effect waves-light"><b>Cancel</b></a>
+                        </div>  
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<!-- Add Category init -->
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/form-advanced.init.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$('.checklist_day').hide().prop('required',false);
+		$('.checklist_month').hide().prop('required',false);
+  		$('.checklist_date').hide().prop('required',false);
+	});
+    setTimeout(function(){
+        changeFrequency();
+    },100)
+	function changeFrequency() {
+		$('.checklist_day').hide().prop('required',false);
+		$('.checklist_month').hide().prop('required',false);
+  		$('.checklist_date').hide().prop('required',false);
+
+        let optionValue = $("#frequency").val();
+        if(optionValue == 'daily'){
+		}
+		else if(optionValue == 'weekly'){
+  			$('.checklist_day').show();
+		} else if(optionValue == 'monthly') {
+			$('.checklist_date').show();
+		}  else if(optionValue == 'quarterly') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}  else if(optionValue == 'annually') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}  else if(optionValue == 'bi_annually') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}
+	}
+</script>
+<%- contentFor('BottomJs') %>

@@ -1,0 +1,360 @@
+<%- contentFor('HeaderCss') %>
+<style type="text/css">
+.image_container {
+    height: 120px;
+    width: 200px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 10px;
+}
+.image_container img {
+    height: 100%;
+    width: 100%;
+    /* object-fit: cover; */
+}
+.image_container span {
+    top: -6px;
+    right: 8px;
+    color: red;
+    font-size: 28px;
+    font-weight: normal;
+    cursor: pointer;
+}
+</style>
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Edit Property & Wing</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/properties">Dashboard</a></li>
+					<li class="breadcrumb-item"><a href="/properties">Master Property</a></li>
+                    <li class="breadcrumb-item active">Edit Property & Wing</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-xl-12">
+        <form action="/admin/api/property-update" method="POST" enctype="multipart/form-data" class="custom-validation">
+            <input type="hidden" name="_id" value="<%= data[0]._id %>">
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="card">
+                    <div class="card-body">
+                    <h4 class="card-title">Edit Property</h4><hr>
+                    <div class="mb-3">
+                        <label class="form-label">Property Name<span class="required">*</span></label>
+                        <input type="text" name="property_name" class="form-control" id="defaultconfig" value="<%= typeof error.inputData != 'undefined' ? error.inputData.property_name : data[0].property_name %>" placeholder="Enter Property Name" autofocus maxlength="200">
+                        <p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.property_name != 'undefined' ) ? error.errMsg.property_name.msg: ''%></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address<span class="required">*</span></label>
+                        <textarea id="textarea" name="address" class="form-control" maxlength="225" rows="3" placeholder="This textarea has a limit of 225 chars."><%= data[0].address %></textarea>
+                        <p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.address != 'undefined' ) ? error.errMsg.address.msg: ''%></p>
+                    </div>
+                     <!-- Start Google Map Location Latitude & Longitude -->
+                     <div class="mb-3">
+                        <label class="form-label">Select Location<span class="required">*</span></label><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" name="latitude" class="form-control" id="latitude" placeholder="latitude" value="<%= location[0] %>" readonly required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="longitude" class="form-control" id="longitude" placeholder="longitude" value="<%= location[1] %>" style="margin-bottom: 10px;" readonly required>
+                            </div>
+                        </div>       
+                
+                        <div class="row" style="margin-bottom: 10px;display:none;">
+                            <div class="col-md-6">
+                                <input class="postcode form-control" id="Postcode" name="Postcode" type="text" value="" placeholder="Enter Location">
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-warning" id="findbutton" value="Find">Find</button>
+                            </div>
+                        </div>       
+                        <div id="map" style="width:100%; height:400px"></div>
+                    </div>
+                         <!-- End Google Map Location Latitude & Longitude -->
+                    <div class="mb-3">
+                        <label class="form-label">Upload Images</label>
+                        <input type="file" name="property_images" onchange="validateFileType()" id="image" multiple="" class="form-control" accept="image/png, image/jpg, image/jpeg">
+                    </div>
+                    <!-- <div>Slider Image Preview : </div> -->
+                    <div class="card-body d-flex flex-wrap justify-content-start" id="container">
+                            <!-- Image will be show here-->    	  
+                    </div>
+
+                    <!-- BEGIN OTHER INFORMATION FORM  -->
+                    <h4 class="card-title">Other Information</h4><hr>
+                    <div class="mb-3">
+                        <label class="form-label">Name of Owner</label>
+                        <input type="text" name="name_of_owner" class="form-control" id="defaultconfig" value="<%= data[0].name_of_owner %>" placeholder="Enter Name of Owner" autofocus maxlength="200">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Area Name</label>
+                        <textarea id="textarea" name="area_name" class="form-control" maxlength="225" rows="3" placeholder="This textarea has a limit of 225 chars."><%= data[0].area_name %></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Square Feet</label>
+                        <input type="text" name="square_feet" class="form-control" id="default" value="<%= data[0].square_feet %>" placeholder="Enter Square Feet" maxlength="100">
+                    </div>
+                    <!-- END OTHER INFORMATION FORM  -->
+                    </div></div>
+                </div>
+
+                <div class="col-xl-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Edit Wings <a href="javascript:void(0);" class="add_button btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2" style="float: right; margin-top: -10px;" title="Add field"><b>Add New Wing</b></a></h4><hr>
+                            <label>Wings Name :</label>
+                            <div class="mb-3 row">
+                                <div class="col-md-11 col-8">
+                                    <div class="input_field_wrapper">
+                                        <% for (j = 0; j < data[0].wings.length; j++) { %>
+                                            <div style="display:flex;"  id="inputFormRow">
+                                                <input type="text" class="form-control" onchange="wingNameChange()" name="wings_name" value="<%=data[0].wings[j].wings_name%>" placeholder="Enter Wing Name" style="margin-bottom: 15px;margin-right:15px;" readonly/>
+                                                <!-- <button class="remove_button btn btn-danger" id="removeRow" type="button" class="btn btn-danger" style="margin-bottom: 14px;">-</button> -->
+                                                <input type="checkbox" id="switch<%=j+1%>" onchange="wingChange('<%= data[0]._id %>','<%= data[0].wings[j]._id %>')" switch="warning" <% if(data[0].wings[j].status == 1){ %> checked <% } %> />
+                                                <label for="switch<%=j+1%>" data-on-label="Yes" data-off-label="No"></label>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Old Slider Images</h4>
+                            <div class="row">
+                                <% for (j = 0; j < data[0].property_images.length; j++) { %>
+                                <div class="col-md-3" id="remove<%= j %>">
+                                    <div class="btn-close" style="width:10px;height:10px;" onclick="removeImage(<%= j %>,'<%= data[0]._id %>')"></div>
+                                    <img class="d-block img-fluid" onclick="removeImage(<%= j %>,'<%= data[0]._id %>')" src="<%=(data[0].property_images[j])%>" alt="Property first image" style="height: 100px;
+                                    width: 100%;padding:5px;">
+                                </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row" style="margin-bottom:20px;">
+                <div class="col-xl-2"></div>
+                <div class="col-xl-6">
+                    <button type="submit" class="btn btn-warning waves-effect waves-light"><i class="bx bx-check-double label-icon"></i> Update</button>
+                    <a href="/properties"><button type="button" class="btn btn-danger waves-effect waves-light"><i class="bx bx-block label-icon"></i> Cancel</button></a>
+                </div>  
+            </div>
+            <p> <span class="required">*</span> Represent that it's compulsory fields </p>
+        </form>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<!-- Add Property & Wing init -->
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/parsleyjs/parsley.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/form-validation.init.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvmNAcTPHGDDXoR9q_FZty7rGABrVBAPo"></script>
+<script type="text/javascript">
+    //$(document).ready(function(){
+    var geocoder = new google.maps.Geocoder();
+    var marker = null;
+    var map = null;
+    function initialize() {
+    var $latitude = document.getElementById('latitude');
+    var $longitude = document.getElementById('longitude');
+    var latitude = '<%= location[0] %>'
+    var longitude ='<%= location[1] %>';
+    var zoom = 10;
+
+    var LatLng = new google.maps.LatLng(latitude, longitude);
+
+    var mapOptions = {
+    zoom: zoom,
+    center: LatLng,
+    panControl: false,
+    zoomControl: false,
+    scaleControl: true,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    if (marker && marker.getMap) marker.setMap(map);
+    marker = new google.maps.Marker({
+    position: LatLng,
+    map: map,
+    title: 'Drag Me!',
+    draggable: true
+    });
+
+    google.maps.event.addListener(marker, 'dragend', function(marker) {
+    var latLng = marker.latLng;
+    $latitude.value = latLng.lat();
+    $longitude.value = latLng.lng();
+    });
+    }
+    initialize();
+    $('#findbutton').click(function (e) {
+        var address = $("#Postcode").val();
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                marker.setPosition(results[0].geometry.location);
+                $(latitude).val(marker.getPosition().lat());
+                $(longitude).val(marker.getPosition().lng());
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+        e.preventDefault();
+    });
+ //   });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var maxFieldLimit = 30; //Input fields increment limitation
+        var add_more_button = $('.add_button'); //Add button selector
+        var Fieldwrapper = $('.input_field_wrapper'); //Input field wrapper
+        var fieldHTML = '<div style="display:flex;margin-bottom:10px;"><input type="text" onchange="wingNameChange()" name="wings_name" class="form-control" value="" placeholder="Enter Wing Name" required/><a href="javascript:void(0);" class="remove_button btn btn-danger" style="margin-left:10px;">-</a></div>'; //New input field html 
+        var x = 1; //Initial field counter is 1
+        $(add_more_button).click(function(){ //Once add button is clicked
+            if(x < maxFieldLimit){ //Check maximum number of input fields
+                x++; //Increment field counter
+                $(Fieldwrapper).append(fieldHTML); // Add field html
+            }
+        });
+        $(Fieldwrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+            e.preventDefault();
+            $(this).parent('div').remove(); //Remove field html
+            x--; //Decrement field counter
+        });
+
+        // remove row
+        $(document).on('click', '#removeRow', function () {
+            $(this).closest('#inputFormRow').remove();
+        });
+    });
+</script>
+<script type="text/javascript">
+    function wingNameChange(){
+        let array = [];       
+        for(let i=0;i< document.getElementsByName("wings_name").length;i++){           
+            let index = array.indexOf(document.getElementsByName("wings_name")[i].value?document.getElementsByName("wings_name")[i].value.trim():"");
+            
+            if(index != -1){
+                toastr.error("Wing already added");
+                document.getElementsByName("wings_name")[i].value = "";
+            }else{
+                array.push(document.getElementsByName("wings_name")[i].value);
+            }
+        }
+    }
+    function validateFileType(){
+        var fileName = document.getElementById("image").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+            //TO DO
+            image_select();
+        }else{
+            toastr.error("Only jpg/jpeg and png files are allowed!");
+            document.getElementById("image").value = null;
+        }   
+    }
+</script>
+<script>
+    // this variable will store images for preview
+    var images = [];
+    function removeImage(imageIndex,propertyId){
+        $("#remove"+imageIndex).hide();
+        $.post("/delete-property-image",
+        {
+            propertyId: propertyId,
+            imageIndex: imageIndex
+        },
+        function(data, status){
+            toastr.success("Image deleted successfully");
+        });
+    }
+   // this function will select images
+   function image_select() {
+        var image = document.getElementById('image').files;
+        for (i = 0; i < image.length; i++) {
+            if (check_duplicate(image[i].name)) {
+            images.push({
+                "name" : image[i].name,
+                "url" : URL.createObjectURL(image[i]),
+                "file" : image[i],
+            })
+            } else 
+            {
+                alert(image[i].name + " is already added to the list");
+            }
+        }
+        document.getElementById('container').innerHTML = image_show();
+    }
+   
+   // this function will show images in the DOM
+   function image_show() {
+        var image = "";
+        images.forEach((i) => {
+            image += `<div class="image_container d-flex justify-content-center position-relative">
+                <img src="`+ i.url +`" alt="Image">
+                <span class="position-absolute" onclick="delete_image(`+ images.indexOf(i) +`)">&times;</span>
+            </div>`;
+        })
+        return image;
+    }
+   
+   // this function will get all images from the array
+    function get_image_data() {
+        var form = new FormData()
+        for (let index = 0; index < images.length; index++) {
+            form.append("file[" + index + "]", images[index]['file']);
+        }
+        return form;
+    }
+   
+   // this function will delete a specific image from the container
+   function delete_image(e) {
+        images.splice(e, 1);
+        document.getElementById('container').innerHTML = image_show();
+   	}
+   
+   // this function will check duplicate images
+   function check_duplicate(name) {
+    var image = true;
+    if (images.length > 0) {
+        for (e = 0; e < images.length; e++) {
+            if (images[e].name == name) {
+                image = false;
+                break;
+            }
+        }
+    }
+    return image;
+    }
+</script>
+<script>
+    function wingChange(id,wingId){
+        $.post("/update-property-wings-status",
+        {
+            propertyId: id,
+            wingId: wingId
+        },
+        function(data, status){
+        
+        });
+    }
+</script>
+<%- contentFor('BottomJs') %>

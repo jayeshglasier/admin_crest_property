@@ -1,0 +1,170 @@
+<%- contentFor('HeaderCss') %>
+<!-- DataTables -->
+<link href="public/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="public/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<!-- Responsive datatable examples -->
+<link href="public/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Categories</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Categories</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Categories Record</h4>
+                <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                    <thead>
+                    <tr>
+                        <th>Sr.No</th>
+                        <th>Category Name</th>
+                        <th>Create Date</th>
+                        <th style="text-align: center;">Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Edinburgh</td>
+                        <td>30-09-2021</td>
+                        <td style="text-align: center;"><input type="checkbox" id="switch5" switch="warning" checked />
+                            <label for="switch5" data-on-label="Yes" data-off-label="No"></label></td>
+                        <td><button class="btn btn-outline-primary">Edit</button>
+                            <button class="btn btn-outline-secondary">View</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+
+<div class="saveDataWrap">
+  <button id="saveData" type="button">External Save Button</button>
+</div>
+<div id="build-wrap"></div>
+
+
+  
+    </div> <!-- end col -->
+</div> <!-- end row -->
+<%- contentFor('FooterJs') %>
+
+<!-- Required datatable js -->
+<script src="public/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="public/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<!-- Buttons examples -->
+<script src="public/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="public/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+
+<!-- Responsive examples -->
+<script src="public/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="public/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+<!-- Datatable init js -->
+<script src="public/assets/js/pages/datatables.init.js"></script>
+
+<%- contentFor('BottomJs') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="https://formbuilder.online/assets/js/form-builder.min.js"></script>
+  <script>
+ const fbEditor = document.getElementById('build-wrap')
+const formData = JSON.stringify(   
+
+[
+  {
+    "type": "header",
+    "subtype": "h1",
+    "label": "Header",
+    "access": false
+  },
+  {
+    "type": "header",
+    "subtype": "h1",
+    "label": "Header",
+    "access": false
+  },
+  {
+    "type": "header",
+    "subtype": "h1",
+    "label": "Header",
+    "access": false
+  },
+  {
+    "type": "paragraph",
+    "subtype": "p",
+    "label": "Lots of text goes here",
+    "access": false
+  },
+  {
+    "type": "file",
+    "required": false,
+    "label": "File Upload",
+    "className": "form-control",
+    "name": "file-1633063261373-0",
+    "access": false,
+    "subtype": "file",
+    "multiple": false
+  },
+  {
+    "type": "radio-group",
+    "required": false,
+    "label": "Radio Group",
+    "inline": false,
+    "name": "radio-group-1633063263517-0",
+    "access": false,
+    "other": false,
+    "values": [
+      {
+        "label": "Option 1",
+        "value": "option-1",
+        "selected": false
+      },
+      {
+        "label": "Option 2",
+        "value": "option-2",
+        "selected": false
+      },
+      {
+        "label": "Option 3",
+        "value": "option-3",
+        "selected": false
+      }
+    ]
+  },
+  {
+    "type": "number",
+    "required": false,
+    "label": "Number",
+    "className": "form-control",
+    "name": "number-1633063263885-0",
+    "access": false
+  },
+  {
+    "type": "header",
+    "subtype": "h1",
+    "label": "Header",
+    "access": false
+  }
+])
+const formBuilder = $(fbEditor).formBuilder({formData})
+
+// Can be used 2 different ways
+formBuilder.actions.toggleAllFieldEdit() // first
+$(fbEditor).formBuilder('toggleAllFieldEdit') // second
+  </script>

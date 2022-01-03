@@ -1,0 +1,343 @@
+<%- contentFor('HeaderCss') %>
+<style type="text/css">
+.image_container { height: 120px; width: 200px; border-radius: 6px; overflow: hidden; margin: 10px; } .image_container img { height: 100%; width: 100%; /* object-fit: cover; */ } .image_container span { top: -6px; right: 8px; color: red; font-size: 28px; font-weight: normal; cursor: pointer; }
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+       #map {
+  height: 100%;
+}
+</style>
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Add Property & Wing</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/properties">Master Property</a></li>
+                    <li class="breadcrumb-item active">Add Property & Wing</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-xl-12">
+        <form action="/admin/api/property-add" method="POST" enctype="multipart/form-data" class="custom-validation" id="orderform">
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="card">
+                        <div class="card-body">
+                    <h4 class="card-title">Add Property</h4><hr>
+                    <div class="mb-3">
+                        <input type="hidden" id="isCategory" name="isCategory" value="">
+                        <label class="form-label">Property Name<span class="required">*</span></label>
+                        <input type="text"  name="property_name" required class="form-control" id="defaultconfig" value="<%= typeof error.inputData != 'undefined' ? error.inputData.property_name : '' %>" placeholder="Enter Property Name" autofocus maxlength="200">
+                        <p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.property_name != 'undefined' ) ? error.errMsg.property_name.msg: ''%></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address<span class="required">*</span></label>
+                        <textarea id="textarea" name="address" required class="form-control" maxlength="225" rows="3" placeholder="This textarea has a limit of 225 chars."><%= typeof error.inputData != 'undefined' ? error.inputData.address : '' %></textarea>
+                        <p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.address != 'undefined' ) ? error.errMsg.address.msg: ''%></p>
+                    </div>
+                     <!-- Start Google Map Location Latitude & Longitude -->
+                    <div class="mb-3">
+                        <label class="form-label">Select Location<span class="required">*</span></label><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" name="latitude" required class="form-control" id="latitude" placeholder="latitude" value="<%= typeof error.inputData != 'undefined' ? error.inputData.latitude : '' %>" readonly>
+                                <p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.latitude != 'undefined' ) ? error.errMsg.latitude.msg: ''%></p>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="longitude" required class="form-control" id="longitude" placeholder="longitude" style="margin-bottom: 10px;" value="<%= typeof error.inputData != 'undefined' ? error.inputData.longitude : '' %>" readonly>
+                                <p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.longitude != 'undefined' ) ? error.errMsg.longitude.msg: ''%></p>
+                            </div>
+                        </div>       
+                
+                        <div class="row" style="margin-bottom: 10px;display:none;">
+                            <div class="col-md-6">
+                                <input class="postcode form-control" id="Postcode" name="Postcode" type="text" value="Mumbai" placeholder="Enter Location">
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2" id="findbutton" value="Find">Find</button>
+                            </div>
+                        </div>       
+                        <div id="map" style="width:100%; height:400px"></div>
+                    </div>
+                     <!-- End Google Map Location Latitude & Longitude -->
+                    <div class="mb-3">
+                        <label class="form-label">Upload Images <small>(Upload multiple images)</small><span class="required">*</span></label>
+                        <input type="file" required name="property_images" id="image" multiple="" class="form-control" onchange="validateFileType()" value="<%= typeof error.inputData != 'undefined' ? error.inputData.property_images : '' %>" accept="image/png, image/jpg, image/jpeg">
+                        <p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.property_images != 'undefined' ) ? error.errMsg.property_images.msg: ''%></p>
+                    </div>
+                    <!-- Slider Image Preview -->
+                    <div class="card-body d-flex flex-wrap justify-content-start" id="container">
+                    <!-- Image will be show here -->
+                    </div>
+
+                    <!-- BEGIN OTHER INFORMATION FORM  -->
+                    <h4 class="card-title">Other Information</h4><hr>
+                    <div class="mb-3">
+                        <label class="form-label">Name of Owner</label>
+                        <input type="text" name="name_of_owner" class="form-control" id="defaultconfig" placeholder="Enter Name of Owner" autofocus maxlength="200">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Area Name</label>
+                        <textarea id="textarea" name="area_name" class="form-control" maxlength="225" rows="3" placeholder="This textarea has a limit of 225 chars."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Square Feet</label>
+                        <input type="text" name="square_feet" class="form-control" id="default" placeholder="Enter Square Feet" maxlength="100">
+                    </div>
+                    <!-- END OTHER INFORMATION FORM  -->
+                    </div></div>
+                </div>
+
+                <div class="col-xl-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Add Wing <a href="javascript:void(0);" class="add_button btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2" style="float: right; margin-top: -10px !important;" title="Add field"><b>Add New Wing</b></a></h4><hr>
+                            <label>Wing Name<span class="required">*</span> :</label>
+                            <div class="mb-3 row">
+                                <div class="col-md-11 col-8">
+                                    <div class="input_field_wrapper">
+                                        <input type="text" required class="form-control" name="wings_name" value="<%= typeof error.inputData != 'undefined' ? error.inputData.wings_name : '' %>" placeholder="Enter Wing Name" style="margin-bottom: 15px;"/>
+                                        <p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.wings_name != 'undefined' ) ? error.errMsg.wings_name.msg: ''%></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:20px;">
+                <div class="col-xl-5"></div>
+                <div class="col-xl-6">
+                    <button type="button" id="openmodel" hidden class="btn btn-warning waves-effect waves-light" data-bs-toggle="modal" data-bs-target=".propertydetailsModal"><i class="bx bx-check-double label-icon"></i> Save</button>
+                    <button type="button" onclick="eventSubmit()" class="btn btn-warning waves-effect waves-light" ><i class="bx bx-check-double label-icon"></i> Save</button>
+                    <a href="/properties"><button type="button" class="btn btn-danger waves-effect waves-light"><i class="bx bx-block label-icon"></i> Cancel</button></a>
+                </div>  
+            </div>
+            <p> <span class="required">*</span> Represent that it's compulsory fields </p>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade propertydetailsModal" tabindex="-1" role="dialog" aria-labelledby="propertydetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="propertydetailsModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/update-ppm-task" method="POST" enctype="multipart/form-data" class="custom-validation">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 text-center mt-3 mb-3">
+                        Do you want to add a category?
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  data-bs-dismiss="modal" onclick="isCategory(true)" class="btn btn-warning waves-effect waves-light" >Yes</button>
+                <button type="button"  data-bs-dismiss="modal" onclick="isCategory(false)" class="btn btn-warning waves-effect waves-light" >No</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvmNAcTPHGDDXoR9q_FZty7rGABrVBAPo"></script>
+<script type="text/javascript">
+    function eventSubmit(){
+        if(! $("#orderform")[0].checkValidity()) {
+          $("#orderform").submit();
+        }else{
+          $("#openmodel").click();
+        }
+    }
+    function isCategory(val){
+        $("#isCategory").val(val);
+        $("#orderform").submit();
+    }
+    //$(document).ready(function(){
+    var geocoder = new google.maps.Geocoder();
+    var marker = null;
+    var map = null;
+    function initialize() {
+    var $latitude = document.getElementById('latitude');
+    var $longitude = document.getElementById('longitude');
+    var latitude = 19.0760
+    var longitude = 72.8777;
+    var zoom = 10;
+
+    var LatLng = new google.maps.LatLng(latitude, longitude);
+
+    var mapOptions = {
+    zoom: zoom,
+    center: LatLng,
+    panControl: false,
+    zoomControl: false,
+    scaleControl: true,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    if (marker && marker.getMap) marker.setMap(map);
+    marker = new google.maps.Marker({
+    position: LatLng,
+    map: map,
+    title: 'Drag Me!',
+    draggable: true
+    });
+
+    google.maps.event.addListener(marker, 'dragend', function(marker) {
+    var latLng = marker.latLng;
+    $latitude.value = latLng.lat();
+    $longitude.value = latLng.lng();
+    });
+    }
+    initialize();
+    $('#findbutton').click(function (e) {
+        var address = $("#Postcode").val();
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                marker.setPosition(results[0].geometry.location);
+                $(latitude).val(marker.getPosition().lat());
+                $(longitude).val(marker.getPosition().lng());
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+        e.preventDefault();
+    });
+ //   });
+</script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/parsleyjs/parsley.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/form-validation.init.js"></script>
+ <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<script type="text/javascript">
+    function validateFileType(){
+        var fileNames = document.getElementById("image").files;
+        let flag = true;
+        for(i=0;i<fileNames.length;i++){
+            let fileName = fileNames[i].name;
+        console.log(fileName);
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+                //TO DO
+            }else{
+                flag = false;
+            }   
+        }
+        if(flag){
+            image_select()
+        }else{
+            toastr.error("Only jpg/jpeg and png files are allowed!");
+            document.getElementById("image").value = null;
+            document.getElementById("container").innerHTML = "";
+        }
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var maxFieldLimit = 30; //Input fields increment limitation
+        var add_more_button = $('.add_button'); //Add button selector
+        var Fieldwrapper = $('.input_field_wrapper'); //Input field wrapper
+        var fieldHTML = '<div style="display:flex;margin-bottom:10px;"><input type="text" name="wings_name" class="form-control" value="" placeholder="Enter Wing Name" required/><a href="javascript:void(0);" class="remove_button btn btn-danger" style="margin-left:10px;">-</a></div>'; //New input field html 
+        var x = 1; //Initial field counter is 1
+        $(add_more_button).click(function(){ //Once add button is clicked
+            if(x < maxFieldLimit){ //Check maximum number of input fields
+                x++; //Increment field counter
+                $(Fieldwrapper).append(fieldHTML); // Add field html
+            }
+        });
+        $(Fieldwrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+            e.preventDefault();
+            $(this).parent('div').remove(); //Remove field html
+            x--; //Decrement field counter
+        });
+    });
+</script>
+<script>
+
+    // this variable will store images for preview
+    var images = [];
+   
+   // this function will select images
+   function image_select() {
+        var image = document.getElementById('image').files;
+        for (i = 0; i < image.length; i++) {
+            if (check_duplicate(image[i].name)) {
+            images.push({
+                "name" : image[i].name,
+                "url" : URL.createObjectURL(image[i]),
+                "file" : image[i],
+            })
+            } else 
+            {
+                alert(image[i].name + " is already added to the list");
+            }
+        }
+        document.getElementById('container').innerHTML = image_show();
+    }
+   
+   // this function will show images in the DOM
+   function image_show() {
+        var image = "";
+        images.forEach((i) => {
+            image += `<div class="image_container d-flex justify-content-center position-relative">
+                <img src="`+ i.url +`" alt="Image">
+                <span class="position-absolute" onclick="delete_image(`+ images.indexOf(i) +`)">&times;</span>
+            </div>`;
+        })
+        return image;
+    }
+   
+   // this function will get all images from the array
+    function get_image_data() {
+        var form = new FormData()
+        for (let index = 0; index < images.length; index++) {
+            form.append("file[" + index + "]", images[index]['file']);
+        }
+        return form;
+    }
+   
+   // this function will delete a specific image from the container
+   function delete_image(e) {
+        images.splice(e, 1);
+        document.getElementById('container').innerHTML = image_show();
+   	}
+   
+   // this function will check duplicate images
+   function check_duplicate(name) {
+    var image = true;
+    if (images.length > 0) {
+        for (e = 0; e < images.length; e++) {
+            if (images[e].name == name) {
+                image = false;
+                break;
+            }
+        }
+    }
+    return image;
+    }
+</script>
+<script>
+    $(function () { //ready
+        <% if(error && error.errorMessage){ %>
+        toastr.error('<%= typeof error.errorMessage != "undefined" ? error.errorMessage: ""%>');
+        <% } %>
+    });
+</script>
+<%- contentFor('BottomJs') %>

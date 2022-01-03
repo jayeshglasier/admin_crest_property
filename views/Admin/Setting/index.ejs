@@ -1,0 +1,120 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<style>
+    .text-center{text-align: center;}
+</style>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Setting</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Setting</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+	<div class="col-5">
+		<div class="card">
+			<div class="card-body">
+				<form action="/store-rating-setting" method="post">
+					<h4 class="card-title">Rating Setting 
+						<a href="javascript:void(0);" class="add_button btn btn-warning" style="float: right; margin-top: -10px !important;" title="Add field">
+							Add Rate
+						</a>
+					</h4><hr>
+					<div class="row">
+						<div class="col-5">
+							<label class="col-form-label" style="text-align: center;">Name</label>
+						</div>
+						<div class="col-3">
+							<label class="col-form-label" style="text-align: center;">Min</label>
+						</div>
+						<div class="col-3">
+							<label class="col-form-label" style="text-align: center;">Max</label>
+						</div>
+					</div>
+	
+					<% for( let i = 0; i < data.length; i++ ) { %>
+						<div class="row">
+							<div class="col-5 p-1">
+								<input type="text" class="form-control" name="rating_name[<%=i%>]" value="<%= data[i].rating_name %>" placeholder="Enter Rating Name" required/>
+							</div>
+							<div class="col-3 p-1">
+								<input type="number" class="form-control" name="min_rating[<%=i%>]" value="<%= data[i].min_rating %>" step="any" min="0" max="1" oninput="validateMinMaxNumber(this)" placeholder="Min Rating" required/>
+							</div>
+							<div class="col-3 p-1">
+								<input type="number" class="form-control" name="max_rating[<%=i%>]" value="<%= data[i].max_rating %>" step="any" min="0" max="1" oninput="validateMinMaxNumber(this)" placeholder="Max Rating" required/>
+							</div>
+						</div>
+					<% } %>
+					<div class="input_field_wrapper">
+					</div>
+					<div class="row justify-content-center mt-3">
+						<div class="col-5 p-1 text-center">
+							<button type="submit" class="btn btn-warning">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		let dataRow = parseInt('<%= data.length %>');
+		let i = dataRow + 1;
+		let maxAddRow = 7;
+
+		// add row
+		$(".add_button").click(function () {
+			var html = '';
+			html += '<div class="row">'
+			html += '<div class="col-5 p-1">'
+			html += '<input type="text" class="form-control" name="rating_name['+i+']" placeholder="Enter Rating Name" required/>'
+			html += '</div>'
+			html += '<div class="col-3 p-1">'
+			html += '<input type="text" class="form-control" name="min_rating['+i+']" min="0" max="1" oninput="validateMinMaxNumber(this)" placeholder="Min Rating" required/>'
+			html += '</div>'
+			html += '<div class="col-3 p-1">'
+			html += '<input type="text" class="form-control" name="max_rating['+i+']" min="0" max="1" oninput="validateMinMaxNumber(this)" placeholder="Max Rating" required/>'
+			html += '</div>'
+			html += '<div class="col-1 p-1">'
+			html += '<a href="javascript:void(0);" class="remove_button btn btn-danger">-</a>'
+			html += '</div>'
+			html += '</div>'
+			
+			if(i < maxAddRow){
+				$('.input_field_wrapper').append(html);
+				i++;
+			}
+		});
+
+		// remove row
+		$(document).on('click', '.remove_button', function () {
+			$(this).closest('.row').remove();
+			i--;
+		});
+	});
+</script>
+
+<script>
+	function validateMinMaxNumber(element) {
+		var min = parseInt(element.min);
+		var max = parseInt(element.max);
+		if (element.value < 0 || element.value > 1) {
+			element.value = '';
+		}
+    }
+</script>
+
+<%- contentFor('BottomJs') %>

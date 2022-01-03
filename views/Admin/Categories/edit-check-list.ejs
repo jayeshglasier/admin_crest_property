@@ -1,0 +1,172 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Edit Check List</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/categories">Master Category</a></li>
+                    <li class="breadcrumb-item"><a href="/edit-category-checklist/<%= data.category_id %>">Category Name</a></li>
+                    <li class="breadcrumb-item active">Edit Check List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Edit Check List</h4>
+                <form action="/update-checklist-details" method="POST">
+					<input type="hidden" name="_id" value="<%= data._id %>">
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="mb-3">
+                                <label class="form-label">Checklist Id<span class="required">*</span></label>
+                                <input type="text" name="checklist_id" value="<%= data.checklist_id %>" class="form-control" placeholder="Enter Checklist Id" maxlength="200" style="text-transform:uppercase" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="mb-3">
+                                <label class="form-label">Checklist Name<span class="required">*</span></label>
+                                <input type="text" name="checklist_name" value="<%= data.checklist_name %>" class="form-control" placeholder="Enter Checklist Name" autofocus maxlength="200">
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="mb-3">
+                                <label class="form-label">Type<span class="required">*</span></label>
+                                <select class="form-control" name="type" required disabled>
+                                    <option value="">Select Type</option>
+                                    <option value="form" <% if (data.type == 'form') { %> selected <% } %> >Form</option>
+                                    <option value="register" <% if (data.type == 'register') { %> selected <% } %> >Register</option>
+                                    <option value="check_list" <% if (data.type == 'check_list') { %> selected <% } %> >Checklist</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="mb-3">
+                                <label class="form-label">Frequency<span class="required">*</span></label>
+                                <select class="form-control" name="frequency" onchange="changeFrequency(this)" required>
+                                    <option value="">Select Frequency</option>
+                                    <option value="daily" <% if (data.frequency == "daily") { %> selected <% } %> >Daily</option>
+                                    <option value="weekly" <% if (data.frequency == "weekly") { %> selected <% } %> >Weekly</option>
+                                    <option value="monthly" <% if (data.frequency == "monthly") { %> selected <% } %> >Monthly</option>
+                                    <option value="quarterly" <% if (data.frequency == "quarterly") { %> selected <% } %> >Quarterly</option>
+                                    <option value="annually" <% if (data.frequency == "annually") { %> selected <% } %> >Annually</option>
+                                    <option value="bi-annually" <% if (data.frequency == "bi-annually") { %> selected <% } %> >Bi-Annually</option>
+                                </select>
+                            </div>
+                        </div>
+						<div class="col-xl-2 checklist_day">
+                            <div class="mb-3">
+                                <label class="form-label">Day<span class="required">*</span></label>
+                                <select class="form-select checklist_day" name="day" required>
+                                    <option value="">Select Day</option>
+									<option value="monday" <% if (data.day == "monday") { %> selected <% } %> >Monday</option>
+									<option value="tuesday" <% if (data.day == "tuesday") { %> selected <% } %> >Tuesday</option>
+									<option value="wednesday" <% if (data.day == "wednesday") { %> selected <% } %> >Wednesday</option>
+									<option value="thursday" <% if (data.day == "thursday") { %> selected <% } %> >Thursday</option>
+									<option value="friday" <% if (data.day == "friday") { %> selected <% } %> >Friday</option>
+									<option value="saturday" <% if (data.day == "saturday") { %> selected <% } %> >Saturday</option>
+									<option value="sunday" <% if (data.day == "sunday") { %> selected <% } %> >Sunday</option>
+                                </select>
+                                <p style="color: red;"><%=(typeof errors!='undefined' && typeof errors.day!='undefined' )? errors.day.msg:''%></p>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 checklist_month">
+                            <div class="mb-3">
+                                <label class="form-label">Month<span class="required">*</span></label>
+                                <select class="form-control checklist_month" name="month" required>
+                                    <option value="">Select Month</option>
+                                    <% for(m = 0; m < months.length; m++) { %>
+                                    	<option value="<%= m+1 %>" <% if (data.month == m) { %> selected <% } %> ><%= months[m] %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 checklist_date">
+                            <div class="mb-3">
+                                <label class="form-label">Date<span class="required">*</span></label>
+                                <select class="form-control checklist_date" name="date" required>
+                                    <option value="">Select Date</option>
+                                    <% for (i = 1; i < 32; i++) { %>
+                                    	<option value="<%=i%>" <% if (data.date == i) { %> selected <% } %> ><%=i%></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="col-xl-2"></div>
+                        <div class="col-xl-6">
+                            <button type="submit" class="btn btn-warning btn-rounded waves-effect waves-light"><b><i class="bx bx-check-double label-icon"></i> Edit</b></button>
+                            <a href="/create-checklist-multi-form/<%= data._id %>" class="btn btn-outline-warning btn-rounded">Edit Form</a>
+                        </div>  
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<!-- Add Category init -->
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/form-advanced.init.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$('.checklist_day').hide().prop('required',false);
+		$('.checklist_month').hide().prop('required',false);
+  		$('.checklist_date').hide().prop('required',false);
+
+		let frequency = '<%= data.frequency %>';
+		if(frequency == 'weekly'){
+  			$('.checklist_day').show();
+		} else if(frequency == 'monthly') {
+			$('.checklist_date').show();
+		}  else if(frequency == 'quarterly') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}  else if(frequency == 'annually') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}  else if(frequency == 'bi_annually') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}
+	});
+
+	function changeFrequency(event) {
+		$('.checklist_day').hide().prop('required',false);
+		$('.checklist_month').hide().prop('required',false);
+		$('.checklist_date').hide().prop('required',false);
+
+		let optionValue = $(event).val();
+
+        if(optionValue == 'daily'){
+		}
+		else if(optionValue == 'weekly'){
+			$('.checklist_day').show();
+		} else if(optionValue == 'monthly') {
+			$('.checklist_date').show();
+		}  else if(optionValue == 'quarterly') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}  else if(optionValue == 'annually') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}  else if(optionValue == 'bi_annually') {
+			$('.checklist_month').show();
+			$('.checklist_date').show();
+		}
+	}
+</script>
+<%- contentFor('BottomJs') %>

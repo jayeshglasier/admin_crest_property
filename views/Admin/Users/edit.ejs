@@ -1,0 +1,194 @@
+<%- contentFor('HeaderCss') %>
+<link href="<%=process.env.PUBLIC_URL%>/public/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Edit User</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+					<li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/users">Master User</a></li>
+                    <li class="breadcrumb-item active">Edit User</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="/update-user" id="formData" method="POST" enctype="multipart/form-data">
+					<input type="hidden" name="_id" value="<%= data[0]._id %>">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Full Name<span class="required">*</span></label>
+                                <input type="text" name="full_name" class="form-control" value="<%= typeof error.inputData != 'undefined' ? error.inputData.full_name : data[0].full_name %>" placeholder="Enter Full Name" autofocus maxlength="200">
+								<p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.full_name != 'undefined' ) ? error.errMsg.full_name.msg: ''%></p>
+							</div>
+                            <div class="mb-3">
+                                <label class="form-label">Position<span class="required">*</span></label>
+                                <select class="form-control" id="position_id" name="position_id">
+                                    <option value="">Select Position</option>
+									<% if (typeof error.inputData != 'undefined' && typeof error.inputData.position_id != 'undefined') { %>
+										<option value="2" <% if(error.inputData.position_id == 2) {%> selected <% } %> >Operation Team</option>
+										<option value="3" <% if(error.inputData.position_id == 3) {%> selected <% } %> >Auditor</option>
+										<option value="4" <% if(error.inputData.position_id == 4) {%> selected <% } %> >Manager</option>
+										<option value="5" <% if(error.inputData.position_id == 5) {%> selected <% } %> >Supervisor</option>
+									<% } else { %>
+										<option value="2" <% if(data[0].position_id == 2) {%> selected <% } %> >Operation Team</option>
+										<option value="3" <% if(data[0].position_id == 3) {%> selected <% } %> >Auditor</option>
+										<option value="4" <% if(data[0].position_id == 4) {%> selected <% } %> >Manager</option>
+										<option value="5" <% if(data[0].position_id == 5) {%> selected <% } %> >Supervisor</option>
+									<% } %>
+                                </select>
+								<p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.position_id != 'undefined' ) ? error.errMsg.position_id.msg: ''%></p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email<span class="required">*</span></label>
+                                <input type="text" name="email" class="form-control" value="<%= typeof error.inputData != 'undefined' ? error.inputData.email : data[0].email %>" placeholder="Enter Email" maxlength="150">
+								<p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.email != 'undefined' ) ? error.errMsg.email.msg: ''%></p>
+							</div>
+                        
+                            <div class="mb-3">
+                                <label class="form-label">Mobile No<span class="required">*</span></label>
+                                <input type="text" name="mobile_no" class="form-control" value="<%= typeof error.inputData != 'undefined' ? error.inputData.mobile_no : data[0].mobile_no %>" placeholder="Enter Mobile No" maxlength="15">
+								<p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.mobile_no != 'undefined' ) ? error.errMsg.mobile_no.msg: ''%></p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Upload Image</label>
+                            	<% if(data[0].profile_image){ %>
+                            	<br><img src="<%= data[0].profile_image %>" style="float: right;margin-top: -35px;margin-bottom: 5px;" alt="Profile Image" class="rounded-circle" height="50px" width="50px">
+                                <% } %>
+                                <input type="file" name="profile_image" id="fileName" onchange="validateFileType()" class="form-control" maxlength="200" accept="image/png, image/jpg, image/jpeg">
+								<p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.profile_image != 'undefined' ) ? error.errMsg.profile_image.msg: ''%></p>
+                            </div>
+							<div class="mb-3">
+                                <label class="form-label">Address<span class="required">*</span></label>
+                                <textarea type="text" name="address" class="form-control" placeholder="Enter Address Here..." maxlength="300"><%= typeof error.inputData != 'undefined' ? error.inputData.address : data[0].address %></textarea>
+								<p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.address != 'undefined' ) ? error.errMsg.address.msg: ''%></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+							<div class="mb-3">
+								<label class="form-label">Select Property Name</label>
+								<div style="border: 1px solid #ced4da;">
+									<div data-simplebar="init" style="max-height: 700px;">
+										<div class="simplebar-wrapper" style="margin: 0px;">
+											<div class="simplebar-mask">
+												<div class="simplebar-offset" style="bottom: 0px;">
+													<div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+														<div class="simplebar-content" style="padding: 0px;">
+															<div class="table-responsive">
+																<table class="table table-nowrap align-middle table-hover mb-0">
+																	<tbody>
+																		<!-- SS old value not selected -->
+																		<% if (typeof error.inputDataSS != 'undefined' && typeof error.inputData.property_id != 'undefined') { %>
+																			<% for( let i = 0; i < propertyData.length; i++ ) { let matched=0 %>
+																				<% let inputDataProperty_id = Array.isArray(error.inputData.property_id) ? error.inputData.property_id : [error.inputData.property_id] %> 
+																				<% for( let j = 0; j < inputDataProperty_id.length; j++ ) { %>
+																					<% if (propertyData[i]._id.toString() == inputDataProperty_id[j]) { %>
+																						<% matched = 1 %>
+																						<% break %>
+																					<% } %>
+																				<% } %>
+																				<tr>
+																					<td style="width: 50px;">
+																						<div class="form-check">
+																							<input class="form-check-input" type="checkbox" id="tasklistCheck<%=i%>" name="property_id[]" value="<%= propertyData[i]._id %>" <%= matched == 1 ? 'checked' : '' %>>
+																							<label class="form-check-label font-size-13" for="tasklistCheck<%=i%>"><%= propertyData[i].property_name %> -- <%= matched == 1 ? 'checked' : '' %></label>
+																						</div>
+																					</td>
+																				</tr>
+																			<% } %>
+																		<% } else { %>
+																			<% for( let i = 0; i < propertyData.length; i++ ) { let matched=0 %>
+																				<% for( let j = 0; j < UserPropertyData.length; j++ ) { %>
+																					<% if (propertyData[i]._id.toString() == UserPropertyData[j].propertyId.toString()) { %>
+																						<% matched = 1 %>
+																						<% break %>
+																					<% } %>
+																				<% } %>
+																				<tr>
+																					<td style="width: 50px;">
+																						<div class="form-check">
+																							<input class="form-check-input" type="checkbox" id="tasklistCheck<%=i%>" name="property_id[]" value="<%= propertyData[i]._id %>" <%= matched == 1 ? 'checked' : '' %>>
+																							<label class="form-check-label font-size-13" for="tasklistCheck<%=i%>"><%= propertyData[i].property_name %> </label>
+																						</div>
+																					</td>
+																				</tr>
+																			<% } %>
+																		<% } %>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="simplebar-placeholder" style="width: auto; height: 470px;"></div>
+										</div>
+									</div>
+								</div>
+								<p style="color: red;"><%=(typeof error.errMsg != 'undefined' && typeof error.errMsg.property_id != 'undefined' ) ? error.errMsg.property_id.msg: ''%></p>
+							</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5"></div>
+                            <div class="col-md-6">
+                            <button type="submit" class="btn btn-warning waves-effect waves-light"><i class="bx bx-check-double label-icon"></i> Update</button>
+                            <a href="/users"><button type="button" class="btn btn-danger waves-effect waves-light"><i class="bx bx-block label-icon"></i> Cancel</button></a></div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<script type="text/javascript">
+	$('#formData').submit(function(){
+      var inputs = $("input:checkbox[name^='property_id']");
+      var isAtLeastOneCheckboxSelected = 0;
+      for(var i = inputs.length-1; i >= 0; --i) {
+            if(inputs[i].checked){
+                isAtLeastOneCheckboxSelected = isAtLeastOneCheckboxSelected + 1;
+            }
+      }
+      if($("#position_id").val() == 4 || $("#position_id").val() == 5){
+          if(isAtLeastOneCheckboxSelected != 1){
+            toastr.error("Please select one proprty");
+            return false;
+          }
+      }else{
+        if(isAtLeastOneCheckboxSelected < 1){
+            toastr.error("Please select atleast one proprty");
+            return false;
+        }
+      }
+      return true;
+    });
+    function validateFileType(){
+        var fileName = document.getElementById("fileName").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+            //TO DO
+        }else{
+            toastr.error("Only jpg/jpeg and png files are allowed!");
+            document.getElementById("fileName").value = null;
+        }   
+    }
+</script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/select2/js/select2.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+<!-- Add Property & Wing init -->
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/form-advanced.init.js"></script>
+<%- contentFor('BottomJs') %>

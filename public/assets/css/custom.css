@@ -1,0 +1,9 @@
+.required{
+    color: red;
+}
+
+.card-title {
+    font-size: 15px;
+    margin: 0 0 19px 0 !important;
+    font-weight: 600;
+}

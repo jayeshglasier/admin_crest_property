@@ -1,0 +1,108 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Edit Assign Auditor</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/manage-rating">Manage Rating</a></li>
+                    <li class="breadcrumb-item active">Edit Assign Auditor</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-sm-4">
+                        <h5>Edit Assign Auditor</h5>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="/manage-rating" class="text-center btn btn-warning waves-effect waves-light" style="align-items: center;float: right;"> <b>Back</b> </a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mb-2">
+                    <div class="col-md-8">
+                        <div class="mb-3 row">
+                            <label class="col-md-2 col-form-label">Select Property Name</label>
+                            <div class="col-md-5" style="padding-right:0px;padding-left:0px;">
+                                <input type="text" name="Property" class="form-control" value="Model Height" readonly/>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-2 col-form-label">Select Group Name</label>
+                            <div class="col-md-5" style="border: 1px solid #ced4da;">
+                                <div data-simplebar="init" style="max-height: 300px;">
+                                    <div class="simplebar-wrapper" style="margin: 0px;">
+                                        <div class="simplebar-mask">
+                                            <div class="simplebar-offset" style="bottom: 0px;">
+                                                <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                                                    <div class="simplebar-content" style="padding: 0px;">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-nowrap align-middle table-hover mb-0">
+                                                                <tbody>
+                                                                    <% for (i = 0; i < 50; i++) { %>
+                                                                    <tr>
+                                                                        <td style="width: 50px;">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input" type="checkbox" id="tasklistCheck<%=i+1%>" checked>
+                                                                                <label class="form-check-label" for="tasklistCheck<%=i+1%>"></label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h5 class="text-truncate font-size-14 mb-1"><a href="#" class="text-dark">Compliance</a></h5>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% } %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="simplebar-placeholder" style="width: auto; height: 448px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-2 col-form-label">Select Auditor</label>
+                            <div class="col-md-5" style="padding-right:0px;padding-left:0px;">
+                                <select class="form-select">
+                                    <option>Select Auditor</option>
+                                    <option>Auditor-1</option>
+                                    <option>Auditor-2</option>
+                                    <option>Auditor-3</option>
+                                    <option>Auditor-4</option>
+                                    <option>Auditor-5</option>
+                                    <option>Auditor-6</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-6">
+                        <button type="submit" class="text-center btn btn-warning waves-effect waves-light" style="align-items: center;"> <b>Save</b> </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<%- contentFor('BottomJs') %>

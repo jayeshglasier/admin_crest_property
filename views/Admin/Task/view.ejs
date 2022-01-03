@@ -1,0 +1,65 @@
+<%- contentFor('HeaderCss') %>
+    <%- contentFor('breadcrumb') %>
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0 font-size-18">View Assign Task</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/task">Assign List</a></li>
+                            <li class="breadcrumb-item active">View Assign Task</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+        <%- contentFor('body') %>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <h4>View Assign Task</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/task" class="text-center btn btn-warning waves-effect waves-light" style="align-items: center;float: right;"> <b>Back</b> </a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width: 20%;"><b>Property Name</b> </td><td>: <%= property_name %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Category</b></td><td>: <%= categories %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Operations Team</b></td><td>: <%= operationTeams %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Manager</b></td><td>: <%= managers %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Supervisor</b></td><td>: <%= supervisors %></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+
+            <%- contentFor('FooterJs') %>
+            <%- contentFor('BottomJs') %>

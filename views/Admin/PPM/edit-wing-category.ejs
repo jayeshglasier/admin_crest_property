@@ -1,0 +1,102 @@
+<%- contentFor( 'HeaderCss') %>
+<%- contentFor( 'breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Assign PPM</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/ppm">PPM</a></li>
+                    <li class="breadcrumb-item active">Assign PPM</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <h4>Edit Wing PPM</h4>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="/assign-ppm" class="btn btn-warning waves-effect waves-light" style="float: right;">Back</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xl-4 col-sm-6" style="margin-left: 50px;">
+                        <div>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" onchange="allChange()" id="ppmCheck" value="">
+                                <label class="form-check-label" for="ppmCheck">All PPM</label>
+                            </div>
+                            <% for(let i=0;i < ppmList.length ; i++){ %>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" <% if(ppmList[i].selected){ %> checked <% } %> type="checkbox" id="ppmCheck<%= i %>" value="<%= ppmList[i]._id %>">
+                                <label class="form-check-label" for="ppmCheck<%= i %>"><%= ppmList[i].ppmName %></label>
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                        <button type="button" onclick="submitPPM()" class="text-center btn btn-warning waves-effect waves-light" style="align-items: center;"> Save </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let ppmList = <%-JSON.stringify(ppmList)%>;
+    function allChange(){
+        if($("#ppmCheck").is(":checked")){
+            for(let i=0;i < ppmList.length; i++){
+                if(!$("#ppmCheck"+i).is(":checked")){
+                    $("#ppmCheck"+i).click();
+                }
+            }
+        }else{
+            for(let i=0;i < ppmList.length; i++){
+                if($("#ppmCheck"+i).is(":checked")){
+                    $("#ppmCheck"+i).click();
+                }
+            }
+        }
+    }
+    function submitPPM(){
+        selectedPPM = [];
+        for(let i=0;i < ppmList.length; i++){
+            if($("#ppmCheck"+i).is(":checked")){
+                selectedPPM.push($("#ppmCheck"+i).val());
+            }
+        }
+        if(selectedPPM.length > 0){
+            $.post("/edit-property-wing",
+              {
+                wingId: '<%= wingId %>',
+                propertyId: '<%= propertyId %>',
+                ppmIds: selectedPPM,
+              },
+              function(data, status){
+                if(data.status){
+                    toastr.success(data.message);
+                }
+              })
+        }else{
+            alert("Please select atleast one PPM")
+        }
+    }
+</script>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<%- contentFor('BottomJs') %>

@@ -1,0 +1,144 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<style>
+    .text-center{text-align: center;}
+</style>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">History</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/history">History</a></li>
+                    <li class="breadcrumb-item active">Category Checklist History</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3 row">
+                            <label for="example-text-input" class="col-md-12 col-form-label">Property Name :-  &nbsp;&nbsp;&nbsp; Oberio</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="mb-3 row">
+                            <label for="example-text-input" class="col-md-5 col-form-label">Start Date :- </label>
+                            <div class="col-md-7">
+                                <div class="input-group" id="datepicker2">
+                                    <input type="text" class="form-control" placeholder="dd M, yyyy" data-date-format="dd M, yyyy" data-date-container='#datepicker2' data-provide="datepicker" data-date-autoclose="true">
+                                    <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3 row">
+                            <label for="example-text-input" class="col-md-5 col-form-label">End Date :- </label>
+                            <div class="col-md-7">
+                                <div class="input-group" id="datepicker2">
+                                    <input type="text" class="form-control" placeholder="dd M, yyyy" data-date-format="dd M, yyyy" data-date-container='#datepicker2' data-provide="datepicker" data-date-autoclose="true">
+                                    <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="mb-3 row">
+                            <button type="button" class="btn btn-warning btn-rounded waves-effect waves-light"><i class="bx bx-search-alt search-icon"></i> Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <h4>History</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-sm-end">
+                            <button type="button" class="btn btn-warning waves-effect waves-light pull-right">ExPORT EXCEL</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap table-check">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Sr.No</th>
+                                <th>Check list Name</th>
+                                <th>Check list  %</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Assign Name</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center" style="width: 7%;">1</td>
+                                <td>Check engine Oil Level And Top up if Necesery</td>
+                                <td>80%</td>
+                                <td class="text-center" style="width: 10%;">Panding</td>
+                                <td class="text-center" style="width: 10%;">Assign Name</td>
+                                <td class="text-center" style="width: 10%;">Form</td>
+                                <td class="text-center" style="width: 7%;">
+                                    <a href="/view-checklist-history" class="btn btn-outline-warning"><b>View</b></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ul class="pagination pagination-rounded justify-content-end mb-2">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="javascript: void(0);" aria-label="Previous">
+                            <i class="mdi mdi-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="javascript: void(0);" aria-label="Next">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/select2/js/select2.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/spectrum-colorpicker2/spectrum.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/@chenfengyuan/datepicker/datepicker.min.js"></script>
+
+<!-- form advanced init -->
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/form-advanced.init.js"></script>
+    <%- contentFor('BottomJs') %>

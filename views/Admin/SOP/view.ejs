@@ -1,0 +1,58 @@
+<%- contentFor('HeaderCss') %>
+<link href="<%=process.env.PUBLIC_URL%>/public/assets/sop_view_css/sop-view-style.css"rel="stylesheet"type="text/css"/>
+
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">View SOP</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/sop">SOP</a></li>
+                    <li class="breadcrumb-item active">View SOP</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+	<div class="tree">
+		<ul>
+			<li> 
+				<a href="#" style="text-decoration: none !important; color: black;"><%= data.category_name %></a>
+				<ul>
+					<% if (data.level == 1) { %>
+						<% for( let j = 0; j < data.single_category_files.length; j++ ) { %>
+							<li> 
+								<a href="<%=process.env.PUBLIC_URL%>/public/images/sop_files/<%= data.single_category_files[j] %>"><span> <%= data.single_category_files[j] %> </span></a> 
+							</li>
+						<% } %>
+					<% } else if (data.level == 2) { %>
+						<% for( let i = 0; i < data.sub_category.length; i++ ) { %>
+							<li>
+								<a href="#" style="text-decoration: none !important; color: black;"><%= data.sub_category[i].sub_category_name %></a>
+								<ul>
+									<% for( let j = 0; j < data.sub_category[i].sub_category_files.length; j++ ) { %>
+										<li> 
+											<a href="<%=process.env.PUBLIC_URL%>/public/images/sop_files/<%= data.sub_category[i].sub_category_files[j] %>" target="_blank"> 
+												<span> <%= data.sub_category[i].sub_category_files[j] %> </span>
+											</a> 
+										</li>
+									<% } %>
+								</ul>
+							</li>
+						<% } %>
+
+					<% } %>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<%- contentFor('FooterJs') %>
+<%- contentFor('BottomJs') %>

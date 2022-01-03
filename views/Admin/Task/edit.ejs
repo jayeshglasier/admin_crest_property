@@ -1,0 +1,193 @@
+<%- contentFor('HeaderCss') %>
+<link href="<%=process.env.PUBLIC_URL%>/public/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Edit Assign Task</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/task">Assign List</a></li>
+                    <li class="breadcrumb-item active">Edit Assign Task</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-sm-4">
+                        <h4>Edit Assign Task</h4>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="/task" class="text-center btn btn-warning waves-effect waves-light" style="align-items: center;float: right;"> <b>Back</b> </a>
+                    </div>
+                </div>
+                <hr>
+                <form method="post" action="/update-task-submit">
+                <div class="row mb-2">
+                    <div class="col-md-7">
+                        <div class="mb-3 row">
+                            <label class="col-md-4 col-form-label">Select Property Name</label>
+                            <div class="col-md-7" style="padding-right:0px;padding-left:0px;">
+                                <input type="hidden" class="form-select" id="taskId" name="taskId" value="<%= taskData._id %>" readonly>
+                                <input type="text" class="form-select"  value="<%= data.property_name %>" disabled>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-4 col-form-label">Select Category Name</label>
+                            <div class="col-md-7" style="border: 1px solid #ced4da;">
+                                <div data-simplebar="init" style="max-height: 300px;">
+                                    <div class="simplebar-wrapper" style="margin: 0px;">
+                                        <div class="simplebar-mask">
+                                            <div class="simplebar-offset" style="bottom: 0px;">
+                                                <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                                                    <div class="simplebar-content" style="padding: 0px;">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-nowrap align-middle table-hover mb-0">
+                                                                <tbody>
+                                                                    <% for (i = 0; i < allCategory.length; i++) { %>
+                                                                    <tr>
+                                                                        <td style="width: 50px;">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input" name="categoryId[]" type="checkbox" id="tasklistCheck<%=i+1%>" value="<%= allCategory[i]._id %>" <% if(allCategory[i].status){ %> checked <% } %>>
+                                                                                <label class="form-check-label" for="tasklistCheck<%=i+1%>"></label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h5 class="text-truncate font-size-14 mb-1"><a href="#" class="text-dark"><%= allCategory[i].category_name %></a></h5>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% } %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="simplebar-placeholder" style="width: auto; height: 448px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-4 col-form-label">Select Operations Team *</label>
+                            <div class="col-md-7" style="padding-right:0px;padding-left:0px;">
+                                <select class="select2 form-control select2-multiple" name="operationTeamId[]" id="operationTeamId" multiple="multiple" data-placeholder="Choose Operations Team..." required>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-4 col-form-label">Select Manager</label>
+                            <div class="col-md-7" style="padding-right:0px;padding-left:0px;">
+                                <select class="select2 form-control select2-multiple" name="managerId[]" id="managerId" multiple="multiple" data-placeholder="Choose Manager...">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-4 col-form-label">Select Supervisor</label>
+                            <div class="col-md-7" style="padding-right:0px;padding-left:0px;">
+                                <select class="select2 form-control select2-multiple" name="superviserId[]" id="superviserId" multiple="multiple" data-placeholder="Choose Supervisor...">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-5">
+                        <h4>Operations Team</h4>
+                        <hr>
+                        <span>Opration Team 1 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <span>Opration Team 2 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <span>Opration Team 3 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <h4 style="margin-top: 15px;">Manager</h4>
+                        <hr>
+                        <span>Manager 1 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <span>Manager 2 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <span>Manager 3 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <span>Manager 4 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <span>Manager 5 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <h4 style="margin-top: 15px;">Supervisor</h4>
+                        <hr>
+                        <span>Supervisor 1 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <span>Supervisor 2 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                        <span>Supervisor 3 <span style="margin-left: 5px; color: red; cursor: pointer;"> &#x2715; </span></span> &nbsp;&nbsp;
+                    </div>-->
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <!--<button type="submit" class="text-center btn btn-warning waves-effect waves-light" style="align-items: center;">Submit </button>-->
+                        <button type="submit" class="btn btn-warning waves-effect waves-light"><i class="bx bx-check-double label-icon"></i> Update</button>
+                        <a href="/task"><button type="button" class="btn btn-danger waves-effect waves-light"><i class="bx bx-block label-icon"></i> Cancel</button></a>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<script>
+    <% if(message){ %>
+        toastr.success('<%= message %>');
+    <% } %>
+    let taskData = <%-JSON.stringify(taskData)%>;
+    changeProperty();
+    function changeProperty(){
+        $.get("/property-task",
+        {
+            propertyId: taskData.propertyId
+        },
+        function(data, status){
+           console.log(data);
+           let managerOption = "";
+           let supervisorOption = "";
+           let operationTeamOption = "";
+           for(let i = 0;i< data.allSupervisor.length;i++){
+                let index = taskData.superviserId.indexOf(data.allSupervisor[i]._id);
+                if(index == -1){
+                    supervisorOption = supervisorOption + "<option value='"+data.allSupervisor[i]._id+"'>"+data.allSupervisor[i].full_name+"</option>";
+                }else{
+                    supervisorOption = supervisorOption + "<option selected value='"+data.allSupervisor[i]._id+"'>"+data.allSupervisor[i].full_name+"</option>";
+                }
+           }
+           for(let i = 0;i< data.allManager.length;i++){
+                let index = taskData.managerId.indexOf(data.allManager[i]._id);
+                if(index != -1){
+                    managerOption = managerOption + "<option selected value='"+data.allManager[i]._id+"'>"+data.allManager[i].full_name+"</option>";
+                }else{
+                    managerOption = managerOption + "<option value='"+data.allManager[i]._id+"'>"+data.allManager[i].full_name+"</option>";
+                }
+                
+           }
+           for(let i = 0;i< data.allOperationTeam.length;i++){
+                let index = taskData.operationTeamId.indexOf(data.allOperationTeam[i]._id);
+                if(index != -1){
+                    operationTeamOption = operationTeamOption + "<option selected value='"+data.allOperationTeam[i]._id+"'>"+data.allOperationTeam[i].full_name+"</option>";
+                }else{
+                    operationTeamOption = operationTeamOption + "<option value='"+data.allOperationTeam[i]._id+"'>"+data.allOperationTeam[i].full_name+"</option>";
+                }
+                
+           }
+           $("#superviserId").html(supervisorOption);
+           $("#managerId").html(managerOption);
+           $("#operationTeamId").html(operationTeamOption);
+           $("#superviserId").select2();
+           $("#managerId").select2();
+           $("#operationTeamId").select2();
+        });
+    }
+</script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/select2/js/select2.min.js"></script>
+<!-- form advanced init -->
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/form-advanced.init.js"></script>
+<%- contentFor('BottomJs') %>   

@@ -1,0 +1,128 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<style>
+    .text-center{text-align: center;}
+</style>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">View PPM</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/ppm">PPM</a></li>
+                    <li class="breadcrumb-item active">View PPM</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" action="/view-ppm" id="form">
+                <div class="row mb-2">
+                    <!-- start searching -->
+                    <div class="col-sm-3">
+                        <div class="search-box">
+                            <div class="position-relative">
+                                <input type="text" name="search" value="<%= search %>" class="form-control" placeholder="Search..."><i class="bx bx-search-alt search-icon"></i>
+                                <input type="hidden" name="page" id="page" value="<%= page %>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding: 0px;">
+                        <button type="button" onclick="pagination(1)" class="btn btn-warning btn-rounded waves-effect waves-light"><i class="bx bx-search-alt search-icon"></i> Search</button>
+                    </div>
+                    <!-- end searching -->
+                    <div class="col-sm-6">
+                        <a href="/ppm" class="btn btn-warning waves-effect waves-light" style="float: right;">Back</a>
+                    </div>
+                </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap table-check">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Sr.No</th>
+                                <th>Property Name</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(data.length ==0) { %>
+                                <tr><td colspan="3" class="text-center">No data found</td></tr>
+                            <% } %>
+                            <% for (i = 0; data.length > i; i++) { %>
+                            <tr>
+                                <td style="width: 7%;" class="text-center"><%= (10*(page-1))+ 1 + i %></a></td>
+                                <td><%= data[i].property_name %></td>
+                                <td style="width: 6%;" class="text-center">
+                                    <a href="/properties-wise-view-ppm/<%= data[i]._id %>" class="btn btn-warning waves-effect waves-light">View</a></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                 <!-- start pagination -->
+                 <ul class="pagination pagination-rounded justify-content-end mb-2">
+                    <% if(page > 1){ %>
+                        <li class="page-item">
+                            <a class="page-link" href="#" onclick="pagination(<%=(Number(page)-1)%>)" aria-label="Previous">
+                                <i class="mdi mdi-chevron-left"></i>
+                            </a>
+                        </li>
+                    <% } %>
+                    <% for (i = 1; i <= totalPage; i++) { %>
+                        <li class="page-item  <% if(page == i){ %> active <% } %>"><a class="page-link"  href="#" onclick="pagination(<%=i%>)"><%=i%></a></li>
+                    <% } %>
+                    <% if(page < totalPage){ %>
+                    <li class="page-item">
+                        <a class="page-link"  href="#" onclick="pagination(<%=(Number(page)+1)%>)" aria-label="Next">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <!-- end pagination -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<!-- Modal -->
+<div class="modal fade orderdetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderdetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderdetailsModalLabel">Add PPM</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 row">
+                    <label for="example-text-input" class="col-md-3 col-form-label">PPM Name</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" value="Artisanal kale" id="example-text-input" placeholder="Equipment Name">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-dismiss="modal">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function pagination(i){
+        $("#page").val(i);
+        $("#form").submit();
+    }
+</script>
+<!-- end modal -->
+<%- contentFor('FooterJs') %>
+<%- contentFor('BottomJs') %>

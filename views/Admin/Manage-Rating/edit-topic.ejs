@@ -1,0 +1,170 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<style>
+    .text-center{text-align: center;}
+</style>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">List & Edit Topic</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/manage-rating">Manage Rating</a></li>
+                    <li class="breadcrumb-item"><a href="/group-list">Group List</a></li>
+                    <li class="breadcrumb-item"><a href="/edit-group-name">Edit Group</a></li>
+                    <li class="breadcrumb-item active">Edit Topic</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-sm-8">
+                        <div class="mb-3 row">
+                            <label for="example-text-input" class="col-md-2 col-form-label">Topic Name:-</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="text" id="example-text-input" placeholder="HouseKeeping">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-warning waves-effect waves-light">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-sm-end">
+                            <a href="/group-list" class="btn btn-warning waves-effect waves-light mb-2 me-2">Back</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                   <!-- start searching -->
+                   <div class="col-sm-3">
+                        <div class="search-box">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Search..."><i class="bx bx-search-alt search-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding: 0px;">
+                        <button type="button" class="btn btn-warning btn-rounded waves-effect waves-light"><i class="bx bx-search-alt search-icon"></i> Search</button>
+                    </div>
+                    <!-- end searching -->
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">
+                            <button type="button" class="btn btn-warning btn-rounded waves-effect waves-light mb-2 me-2" data-bs-toggle="modal" data-bs-target=".addchecklist"><b><i class="mdi mdi-plus me-1"></i> ADD CHECKLIST</b> </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap table-check">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Sr.No</th>
+                                <th>Check List</th>
+                                <th>Cue List</th>
+                                <th class="text-center">Weightage</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center" style="width: 7%;">1</td>
+                                <td>Are All Fire Extinguishers in Green Zone</td>
+                                <td>Tack 4 Random Sample From each Tow</td>
+                                <td class="text-center" style="width: 7%;">1</td>
+                                <td class="text-center" style="width: 7%;">
+                                    <input type="checkbox" id="switch1" switch="warning" checked="">
+                                    <label for="switch1" data-on-label="Yes" data-off-label="No"></label>
+                                </td>
+                                <td class="text-center" style="width: 7%;">
+                                    <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target=".addchecklist"><b>Edit</b></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ul class="pagination pagination-rounded justify-content-end mb-2">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="javascript: void(0);" aria-label="Previous">
+                            <i class="mdi mdi-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="javascript: void(0);" aria-label="Next">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<!-- add Checklist Modal -->
+<div class="modal fade addchecklist" tabindex="-1" role="dialog" aria-labelledby="orderdetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderdetailsModalLabel">Add Checklist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="example-text-input" class="col-md-6 col-form-label">Group Name:-</label>
+                        <label for="example-text-input" class="col-md-3 col-form-label">Compliance</label>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="example-text-input" class="col-md-6 col-form-label">Topic Name:-</label>
+                        <label for="example-text-input" class="col-md-3 col-form-label">Fire</label>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3 row">
+                            <label for="example-text-input" class="col-md-4 col-form-label">Check List :-</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" value="Are All Fire Extinguishers in Green Zone" id="example-text-input" placeholder="Are All Fire Extinguishers in Green Zone">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="example-text-input" class="col-md-4 col-form-label">Cue For Auditor:-
+                            </label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" value="Tack 4 Random Sample From each Tow" id="example-text-input" placeholder="Tack 4 Random Sample From each Tow">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="example-text-input" class="col-md-4 col-form-label">Weightage :-</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" value="1" id="example-text-input" placeholder="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning waves-effect waves-light" data-bs-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal -->
+<%- contentFor('FooterJs') %>
+<%- contentFor('BottomJs') %>

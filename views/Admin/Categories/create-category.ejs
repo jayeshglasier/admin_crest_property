@@ -1,0 +1,50 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Add Category</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/categories">Master Category</a></li>
+                    <li class="breadcrumb-item active">Add Category</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Add Category</h4>
+                <form action="/category-store" method="POST" class="custom-validation">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="mb-3">
+                                <label class="form-label">Category Name<span class="required">*</span></label>
+                                <input type="text" name="category_name" class="form-control" required placeholder="Enter Category Name" minlength="5" autofocus maxlength="200" value="<%= typeof error != 'undefined' && typeof error.inputData != 'undefined' ? error.inputData.category_name : '' %>">
+                                <p style="color: red;"><%=(typeof error != 'undefined' && typeof error.errMsg != 'undefined' && typeof error.errMsg.category_name != 'undefined' ) ? error.errMsg.category_name.msg: ''%></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="col-xl-2"></div>
+                        <div class="col-xl-6">
+                            <button type="submit" class="btn btn-warning btn-rounded waves-effect waves-light" style="width: 20%;"><b>Save & Next</b></button>
+                        </div>  
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<!-- Add Category init -->
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/form-advanced.init.js"></script>
+<%- contentFor('BottomJs') %>

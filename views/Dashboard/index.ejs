@@ -1,0 +1,168 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Dashboard</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium">Property</p>
+                                <h4 class="mb-0"><%= dashboardCount.propertyCount %></h4>
+                            </div>
+                            <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                <span class="avatar-title">
+									<i class="fas fa-home font-size-24"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium">Category</p>
+                                <h4 class="mb-0"><%= dashboardCount.categoryCount %></h4>
+                            </div>
+                            <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                <span class="avatar-title">
+                                    <i class="fas fa-th-large font-size-24"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium">User</p>
+                                <h4 class="mb-0"><%= dashboardCount.usersCount %></h4>
+                            </div>
+                            <div class="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
+                                <span class="avatar-title rounded-circle bg-primary">
+                                    <i class="fas fa-user-alt font-size-24"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2" style="margin-top:10px;"> 
+                        <h4 class="card-title">Task Analytics</h4> 
+                    </div>
+                    <div class="col-md-5">
+                        <select class="form-control">
+                            <option>Select Property</option>
+                            <% for (i = 0; i < data.length; i++) { %>
+                            <option value="<%= data[i]._id %>"><%= data[i].property_name.slice(0,35) %> <% if(data[i].property_name.length > 35){ %> ... <% } %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group" id="datepicker2">
+                            <input type="text" class="form-control" placeholder="dd M, yyyy" data-date-format="dd M, yyyy" data-date-container='#datepicker2' data-provide="datepicker" data-date-autoclose="true">
+                            <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2" style="">
+                        <div class="input-group" id="datepicker2">
+                            <input type="text" class="form-control" placeholder="dd M, yyyy" data-date-format="dd M, yyyy" data-date-container='#datepicker2' data-provide="datepicker" data-date-autoclose="true">
+                            <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="margin-left: 25%;">
+                    <div id="taskAnalytics" class="apex-charts"></div>
+                </div>
+                <div class="text-center text-muted">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="mt-4">
+                                <p class="mb-2 text-truncate"><i class="mdi mdi-circle text-primary me-1"></i>Total Task</p>
+                                <h5>100</h5>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mt-4">
+                                <p class="mb-2 text-truncate"><i class="mdi mdi-circle text-success me-1"></i> Completed Task</p>
+                                <h5>60 (60%)</h5>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mt-4">
+                                <p class="mb-2 text-truncate"><i class="mdi mdi-circle text-danger me-1"></i> Pending Task</p>
+                                <h5>40 (40%)</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<!-- apexcharts -->
+<script src="public/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="public/assets/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="public/assets/libs/@chenfengyuan/datepicker/datepicker.min.js"></script>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script>
+    var options = {
+          series: [60, 40],
+          labels:['Completed','Pending'],
+          chart: {
+          type: 'donut',
+        },
+        colors:['#34c38f', '#f46a6a'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+        var chart = new ApexCharts(document.querySelector("#taskAnalytics"), options);
+        chart.render();
+</script>
+<!-- Saas dashboard init -->
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/saas-dashboard.init.js"></script>
+<%- contentFor('BottomJs') %>

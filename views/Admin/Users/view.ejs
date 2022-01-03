@@ -1,0 +1,160 @@
+<%- contentFor('HeaderCss') %>
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Profile</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+					<li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/users">Master User</a></li>
+                    <li class="breadcrumb-item active">Profile</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-xl-4">
+        <div class="card overflow-hidden">
+            <div class="card-body pt-0">
+                <div class="row">
+                    <div class="col-md-12" style="text-align: center;">
+                        <div class="avatar-md profile-user-wid mb-4" style="margin: 0px auto; padding-top: 13px;">
+                            <img src="<%= data[0].profile_image %>" onerror="this;this.src='/public/images/users/user-profile.png';" alt="Profile Image" class="img-thumbnail rounded-circle" style="height: 70px; width: 100% !important;">
+                        </div>
+                        <h5 class="font-size-15 text-truncate"><%= data[0].full_name %></h5>
+                        <p class="text-muted mb-0 text-truncate"><%= data[0].position_type %> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end card -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Personal Information</h4>
+                <div class="table-responsive">
+                    <table class="table table-nowrap mb-0">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Full Name :</th>
+                                <td><%= data[0].full_name %></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">E-mail :</th>
+                                <td><%= data[0].email %></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Mobile :</th>
+                                <td><%= data[0].mobile_no %></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Address :</th>
+                                <td><%= data[0].address %></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Position :</th>
+                                <td><%= data[0].position_type %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- end card -->
+    </div>         
+    
+    <div class="col-xl-8">
+        <div class="row" style="display: none;;">
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium mb-2">Total Task</p>
+                                <h4 class="mb-0">125</h4>
+                            </div>
+                            <div class="mini-stat-icon avatar-sm align-self-center rounded-circle bg-primary">
+                                <span class="avatar-title">
+                                    <i class="bx bx-check-circle font-size-24"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium mb-2">Completed Task</p>
+                                <h4 class="mb-0">12</h4>
+                            </div>
+                            <div class="avatar-sm align-self-center mini-stat-icon rounded-circle bg-primary">
+                                <span class="avatar-title">
+                                    <i class="bx bx-hourglass font-size-24"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium mb-2">Pending Task</p>
+                                <h4 class="mb-0">12</h4>
+                            </div>
+                            <div class="avatar-sm align-self-center mini-stat-icon rounded-circle bg-primary">
+                                <span class="avatar-title">
+                                    <i class="bx bx-hourglass font-size-24"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Assign Property List 
+                    <a href="/users" class="text-center btn btn-warning waves-effect waves-light" style="align-items: center;float: right;"> <b>Back</b> </a>
+                </h4>
+                <div class="table-responsive">
+                    <table class="table table-nowrap table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Property Name</th>
+                                <th scope="col">address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(data.length ==0) { %>
+                                <tr><td colspan="3" class="text-center">No data found</td></tr>
+                            <% } %>
+							<% for( let i = 0; i < UserPropertyData.length; i++ ) { %>
+								<tr>
+									<th scope="row"><%= i+1 %> </th>
+									<td><%= UserPropertyData[i].propertyId.property_name %></td>
+									<td><%= UserPropertyData[i].propertyId.address %></td>
+								</tr>
+							<% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<%- contentFor('FooterJs') %>
+<script src="<%=process.env.PUBLIC_URL%>/public/assets/js/pages/profile.init.js"></script>
+<%- contentFor('BottomJs') %>
